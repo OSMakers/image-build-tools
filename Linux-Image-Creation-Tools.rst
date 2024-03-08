@@ -36,24 +36,30 @@ mkosi
 =====
 
 -  Vendor: systemd
--  Site: https://github.com/systemd/mkosi
--  Supported host distributions: Fedora, CentOS/RHEL, (open)SUSE, Debian/Ubuntu
--  Supported target distributions: Fedora, CentOS/RHEL, (open)SUSE, Debian/Ubuntu
+-  Site: http://mkosi.systemd.io, https://github.com/systemd/mkosi
+-  Supported host distributions: Fedora, CentOS/RHEL, (open)SUSE, Debian/Ubuntu, Arch, Gentoo, NixOS
+-  Supported target distributions: Fedora, CentOS/RHEL, (open)SUSE, Debian/Ubuntu, Arch
 -  Definition format: INI-style (systemd)
--  Creates: disk images
+-  Creates: filesystem trees, disk images, archives, initrds, UKIs, sysexts/confexts/portables
 -  Implemented in: Python
 
 The mkosi tool originates from the systemd project and was originally
-created to simplify making opinionated “legacy-free” images for systemd
-development. The term “legacy-free” indicates that images are UEFI-only,
-formatted as GPT disks with no protective MBR, use systemd-boot as the
-UEFI boot manager with boot entries configured using the `bootloader
+created to simplify making opinionated “legacy-free” images for
+systemd development. Those images were initially UEFI-only, formatted
+as GPT disks with no protective MBR, and used systemd-boot as the UEFI
+boot manager with boot entries configured using the `bootloader
 specification <https://systemd.io/BOOT_LOADER_SPECIFICATION/>`__, and
 partitions labeled with UUIDs per the `discoverable partition
-specification <https://systemd.io/DISCOVERABLE_PARTITIONS/>`__. Images
-are built from scratch, but through leveraging systemd tooling, image
-builds take less time than contemporaries (around 3-8 minutes) at the
-cost of some flexibility.
+specification <https://systemd.io/DISCOVERABLE_PARTITIONS/>`__.
+Currently UEFI and BIOS images are supported, using sd-boot (only for
+UEFI) or grub, as well as direct kernel boots for Qemu. SecureBoot is
+supported both using self-enrolled certificates and shim. Images are
+built from scratch, but through leveraging systemd tooling and caching
+of downloaded packages and package manager metadata, image builds take
+less time than competitors (less than one minute for small images when
+caches are populated). Incremental builds and overlays can also reduce
+image build times. Images can be built by unprivileged users (in
+particular, without access to loop devices or virtualization).
 
 virt-builder / virt-install (libguestfs)
 ========================================
@@ -228,7 +234,7 @@ structure requires advanced knowledge of how a Debian or Ubuntu system
 is assembled to properly configure it. Builds with this system are
 somewhat slower than with similar processes to build from scratch
 (~15-20 minutes per build) because of how the construction process is
-broken up into stages that run some actions in a less than optional way.
+broken up into stages that run some actions in a less than optimal way.
 This tool can only be used to create ISO images. The Ubuntu version is a
 fork that behaves differently from the Debian version, so they are not
 interchangeable.
