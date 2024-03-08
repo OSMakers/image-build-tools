@@ -122,13 +122,6 @@ virt-install depending on the image creation type. Advanced knowledge of
 how a system is assembled is required to correctly configure an image.
 This can only produce cloud images.
 
-***************
-Further Options
-***************
-
-These are alternatives that are either more limited or not actively
-maintained, but are listed for completeness and informational purposes.
-
 OSBuild / Image Builder
 =======================
 
